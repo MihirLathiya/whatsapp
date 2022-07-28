@@ -44,8 +44,8 @@ class _AddInfoScreenState extends State<AddInfoScreen> {
     Map<String, dynamic>? getUserData = user.data();
     setState(() {
       print('>>>> $image');
-      image = getUserData!['image'];
-      name.text = getUserData['name'];
+      image = getUserData?['image'];
+      name.text = getUserData?['name'];
     });
   }
 

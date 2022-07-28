@@ -6,6 +6,7 @@ import 'package:whatsapp/view/common/colors.dart';
 import 'package:whatsapp/view/common/text.dart';
 import 'package:whatsapp/view/home_screen/calls.dart';
 import 'package:whatsapp/view/home_screen/chat_room/chats.dart';
+import 'package:whatsapp/view/home_screen/setting_screen.dart';
 import 'package:whatsapp/view/home_screen/status/status.dart';
 import '../auth/mobile_screen.dart';
 import 'chat_room/user_select.dart';
@@ -190,11 +191,21 @@ class _HomeScreenState extends State<HomeScreen>
                                     ),
                                     PopupMenuItem(
                                       onTap: () {},
-                                      child: Text("Linked devices"),
+                                      child: InkWell(
+                                          onTap: () {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: ((context) =>
+                                                    SettingsScreen()),
+                                              ),
+                                            );
+                                          },
+                                          child: Text("Setting")),
                                     ),
                                     PopupMenuItem(
                                       onTap: () {
-                                        storage.remove('names').then(
+                                        storage.remove('name').then(
                                               (value) => Get.offAll(
                                                 () => MobileScreen(),
                                               ),

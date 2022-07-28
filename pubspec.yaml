@@ -48,6 +48,7 @@ dependencies:
   firebase_storage:
   firebase_messaging:
   emoji_picker_flutter: ^1.2.1
+  intl:
 
 
 dev_dependencies:

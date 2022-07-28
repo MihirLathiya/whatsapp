@@ -1,10 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:whatsapp/view/common/text.dart';
 import 'package:whatsapp/view/home_screen/chat_room/chatRoom.dart';
 import '../../common/colors.dart';
 import 'functions.dart';
+
+FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
 class Chats extends StatefulWidget {
   final search;
@@ -15,8 +18,7 @@ class Chats extends StatefulWidget {
 }
 
 class _ChatsState extends State<Chats> {
-  String? currentUserName;
-  // String? roomId;
+  List uids = [];
 
   @override
   Widget build(BuildContext context) {
@@ -49,17 +51,23 @@ class _ChatsState extends State<Chats> {
             shrinkWrap: true,
             itemCount: info.length,
             itemBuilder: (context, index) {
-              return snapshot.data!.docs[index]['roomId'] == '0'
+              var x =
+                  firebaseAuth.currentUser!.uid[0].toLowerCase().codeUnitAt(0) >
+                          info[index].id.toLowerCase().codeUnitAt(0)
+                      ? firebaseAuth.currentUser!.uid + info[index].id
+                      : info[index].id + firebaseAuth.currentUser!.uid;
+              return firebaseAuth.currentUser!.uid ==
+                      snapshot.data!.docs[index].id
                   ? SizedBox()
                   : InkWell(
                       onTap: () async {
-                        // roomId = await chatRoomId(
-                        //     '${firebaseAuth.currentUser!.uid}',
-                        //     '${info[index].id}');
-                        // print("ROOMID$roomId");
+                        String roomId = await chatRoomId(
+                            firebaseAuth.currentUser!.uid,
+                            snapshot.data!.docs[index].id);
+                        print("ROOOOOOMID$roomId");
                         Get.to(
                           () => ChatRoom(
-                            chatRoomId: '${info[index]['roomId']}',
+                            chatRoomId: roomId,
                             image: '${info[index]['image']}',
                             name: '${info[index]['name']}',
                             number: '${info[index]['number']}',
@@ -99,10 +107,50 @@ class _ChatsState extends State<Chats> {
                                   size: height * 0.02,
                                   weight: FontWeight.w500,
                                 ),
-                                Ts(
-                                  text: '${info[index]['bio']}',
-                                  size: height * 0.015,
-                                  weight: FontWeight.w500,
+                                SizedBox(
+                                  height: height * 0.02,
+                                  width: width * 0.15,
+                                  child: StreamBuilder(
+                                    stream: FirebaseFirestore.instance
+                                        .collection("chatRoom")
+                                        .doc(x)
+                                        .collection('chats')
+                                        .orderBy('time', descending: true)
+                                        .snapshots(),
+                                    builder: (BuildContext context,
+                                        AsyncSnapshot<
+                                                QuerySnapshot<
+                                                    Map<String, dynamic>>>
+                                            snap) {
+                                      if (snap.hasData) {
+                                        print(
+                                            'ROOMIDDDDDDDD$x${info[index]['name']}');
+                                        return ListView.builder(
+                                          physics:
+                                              NeverScrollableScrollPhysics(),
+                                          itemCount: snap.data!.docs.length,
+                                          itemBuilder: (context, index) {
+                                            var lastMess = snap
+                                                .data!.docs[index]['message'];
+                                            print('LASTMESSAGE$lastMess');
+                                            return lastMess == ''
+                                                ? Ts(
+                                                    text: 'lastMess',
+                                                    color: Colors.grey,
+                                                    size: 15,
+                                                  )
+                                                : Ts(
+                                                    text: lastMess,
+                                                    color: Colors.grey,
+                                                    size: 15,
+                                                  );
+                                          },
+                                        );
+                                      } else {
+                                        return Text("Available");
+                                      }
+                                    },
+                                  ),
                                 ),
                               ],
                             )

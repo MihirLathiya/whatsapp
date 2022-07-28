@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:whatsapp/view/common/colors.dart';
@@ -33,7 +32,7 @@ class _StatusViewState extends State<StatusView> {
     return Scaffold(
       body: PageView.builder(
         controller: pageController,
-        itemCount: 2,
+        itemCount: 1,
         itemBuilder: (BuildContext context, int index) {
           return GestureDetector(
             onDoubleTap: () {

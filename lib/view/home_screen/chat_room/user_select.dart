@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:whatsapp/view/common/button.dart';
@@ -6,6 +7,8 @@ import 'package:whatsapp/view/common/colors.dart';
 import '../../common/text.dart';
 import 'chatRoom.dart';
 import 'functions.dart';
+
+FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
 class UserSelectScreen extends StatefulWidget {
   const UserSelectScreen({Key? key}) : super(key: key);
@@ -132,7 +135,6 @@ class _UserSelectScreenState extends State<UserSelectScreen> {
               child: StreamBuilder(
                 stream: firebaseFirestore
                     .collection('user')
-                    // .where('roomId', isEqualTo: '0')
                     .orderBy('time', descending: true)
                     .snapshots(),
                 builder: (BuildContext context,
@@ -140,8 +142,6 @@ class _UserSelectScreenState extends State<UserSelectScreen> {
                         snapshot) {
                   if (snapshot.hasData) {
                     List<DocumentSnapshot> info = snapshot.data!.docs;
-                    print("length======>${info.length}");
-                    print("Text======>${search}");
                     if (search.isNotEmpty) {
                       info = info.where((element) {
                         return element
@@ -213,9 +213,10 @@ class _UserSelectScreenState extends State<UserSelectScreen> {
                                     buttonName: 'message',
                                     onTap: () async {
                                       roomId = await chatRoomId(
-                                          '${firebaseAuth.currentUser!.uid}',
-                                          '${info[index].id}');
-                                      print("ROOMID$roomId");
+                                        '${snapshot.data!.docs[index].id}',
+                                        '${firebaseAuth.currentUser!.uid}',
+                                      );
+                                      print("ROOMEDUSERSELECT$roomId");
 
                                       Get.to(
                                         () => ChatRoom(
@@ -223,7 +224,8 @@ class _UserSelectScreenState extends State<UserSelectScreen> {
                                           image: '${info[index]['image']}',
                                           name: '${info[index]['name']}',
                                           number: '${info[index]['number']}',
-                                          uid: info[index].id,
+                                          uid: snapshot.data!.docs[index].id,
+                                          // token: '${info[index]['number']}'
                                         ),
                                         transition: Transition.rightToLeft,
                                       );
