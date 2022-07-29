@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:whatsapp/controller/search_controller.dart';
-import 'package:whatsapp/controller/tabController.dart';
-import 'package:whatsapp/view/common/colors.dart';
-import 'package:whatsapp/view/common/text.dart';
 import 'package:whatsapp/view/home_screen/calls.dart';
-import 'package:whatsapp/view/home_screen/chat_room/chats.dart';
-import 'package:whatsapp/view/home_screen/setting_screen.dart';
+import 'package:whatsapp/view/home_screen/setting/setting_screen.dart';
 import 'package:whatsapp/view/home_screen/status/status.dart';
+import 'package:whatsapp/view/prefrence_manager.dart';
+import '../../common/colors.dart';
+import '../../common/text.dart';
+import '../../controller/controllers.dart';
 import '../auth/mobile_screen.dart';
-import 'chat_room/user_select.dart';
+import 'chat/chats.dart';
+import 'chat/user_select.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -45,7 +45,7 @@ class _HomeScreenState extends State<HomeScreen>
   initState() {
     tabController =
         TabController(length: tab.length, initialIndex: 0, vsync: this);
-    image = storage.read('userImage');
+    image = PrefrenceManager.getImage();
     print('USERIMAGE:- $image');
     tabController!.addListener(() {
       if (tabController!.index == 0) {
@@ -90,13 +90,13 @@ class _HomeScreenState extends State<HomeScreen>
                 pinned: true,
                 backgroundColor: AppColors.mainColor,
                 expandedHeight: searchController.isSearch.value == true
-                    ? height * 0.07
+                    ? height * 0.08
                     : height * 0.12,
                 flexibleSpace: searchController.isSearch.value == true
                     ? SafeArea(
                         child: AnimatedContainer(
                           color: Colors.white,
-                          height: height * 0.07,
+                          height: height * 0.08,
                           width: width,
                           curve: Curves.bounceInOut,
                           duration: Duration(seconds: 5),
@@ -164,10 +164,9 @@ class _HomeScreenState extends State<HomeScreen>
                                   splashRadius: 20,
                                   onPressed: () {
                                     searchController.isSearched();
-                                    setState(() {
-                                      searchText = '';
-                                      _search.clear();
-                                    });
+
+                                    searchText = '';
+                                    _search.clear();
                                   },
                                   icon: Icon(
                                     Icons.search,
@@ -205,11 +204,11 @@ class _HomeScreenState extends State<HomeScreen>
                                     ),
                                     PopupMenuItem(
                                       onTap: () {
-                                        storage.remove('name').then(
-                                              (value) => Get.offAll(
-                                                () => MobileScreen(),
-                                              ),
-                                            );
+                                        PrefrenceManager.removeName().then(
+                                          (value) => Get.offAll(
+                                            () => MobileScreen(),
+                                          ),
+                                        );
                                       },
                                       child: Text("Log Out"),
                                     ),

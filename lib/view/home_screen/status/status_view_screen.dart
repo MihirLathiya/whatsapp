@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:whatsapp/view/common/colors.dart';
-import 'package:whatsapp/view/common/text.dart';
+import '../../../common/colors.dart';
+import '../../../common/text.dart';
 
 class StatusView extends StatefulWidget {
   final status;

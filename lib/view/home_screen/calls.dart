@@ -1,11 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:whatsapp/view/home_screen/chat_room/functions.dart';
-
-import '../../controller/mobile_auth_controller.dart';
-import '../common/colors.dart';
-import '../common/text.dart';
+import '../../common/colors.dart';
+import '../../common/text.dart';
+import 'chat/functions.dart';
 
 FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 

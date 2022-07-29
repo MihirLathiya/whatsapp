@@ -2,9 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:whatsapp/view/common/text.dart';
-import 'package:whatsapp/view/home_screen/chat_room/chatRoom.dart';
-import '../../common/colors.dart';
+import '../../../common/colors.dart';
+import '../../../common/text.dart';
+import 'chatRoom.dart';
 import 'functions.dart';
 
 FirebaseAuth firebaseAuth = FirebaseAuth.instance;
@@ -18,17 +18,15 @@ class Chats extends StatefulWidget {
 }
 
 class _ChatsState extends State<Chats> {
-  List uids = [];
-
   @override
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
-    print('SEARCHTEXT${widget.search}');
-
     return StreamBuilder(
       stream: firebaseFirestore
           .collection('user')
+          .doc(firebaseAuth.currentUser!.uid)
+          .collection('users')
           .orderBy('time', descending: true)
           .snapshots(),
       builder: (BuildContext context,
@@ -64,7 +62,6 @@ class _ChatsState extends State<Chats> {
                         String roomId = await chatRoomId(
                             firebaseAuth.currentUser!.uid,
                             snapshot.data!.docs[index].id);
-                        print("ROOOOOOMID$roomId");
                         Get.to(
                           () => ChatRoom(
                             chatRoomId: roomId,
@@ -109,7 +106,7 @@ class _ChatsState extends State<Chats> {
                                 ),
                                 SizedBox(
                                   height: height * 0.02,
-                                  width: width * 0.15,
+                                  width: width * 0.2,
                                   child: StreamBuilder(
                                     stream: FirebaseFirestore.instance
                                         .collection("chatRoom")
@@ -123,8 +120,6 @@ class _ChatsState extends State<Chats> {
                                                     Map<String, dynamic>>>
                                             snap) {
                                       if (snap.hasData) {
-                                        print(
-                                            'ROOMIDDDDDDDD$x${info[index]['name']}');
                                         return ListView.builder(
                                           physics:
                                               NeverScrollableScrollPhysics(),
@@ -132,18 +127,12 @@ class _ChatsState extends State<Chats> {
                                           itemBuilder: (context, index) {
                                             var lastMess = snap
                                                 .data!.docs[index]['message'];
-                                            print('LASTMESSAGE$lastMess');
-                                            return lastMess == ''
-                                                ? Ts(
-                                                    text: 'lastMess',
-                                                    color: Colors.grey,
-                                                    size: 15,
-                                                  )
-                                                : Ts(
-                                                    text: lastMess,
-                                                    color: Colors.grey,
-                                                    size: 15,
-                                                  );
+                                            return Ts(
+                                              text: lastMess,
+                                              color: Colors.grey,
+                                              size: height * 0.015,
+                                              overFlow: TextOverflow.ellipsis,
+                                            );
                                           },
                                         );
                                       } else {

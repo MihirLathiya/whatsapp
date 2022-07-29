@@ -3,12 +3,10 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
-import 'package:whatsapp/view/common/colors.dart';
-import 'package:whatsapp/view/home_screen/home_screen.dart';
+import '../common/colors.dart';
 import '../view/auth/otp_screen.dart';
 import '../view/auth/profile_add_screen.dart';
-
-FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+import '../view/prefrence_manager.dart';
 
 class MobileController extends GetxController {
   final TextEditingController phone = TextEditingController();
@@ -88,8 +86,9 @@ class MobileController extends GetxController {
           update();
           showAlert("Enter Valid OTP");
         } else {
-          storage.write("mobile", phone.text);
-          storage.write('token', token);
+          PrefrenceManager.setNumber(phone.text);
+          PrefrenceManager.setToken('$token');
+
           Get.off(() => AddInfoScreen(), transition: Transition.leftToRight);
           isLoading = false;
           update();

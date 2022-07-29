@@ -13,5 +13,4 @@ class AppColors {
 }
 
 FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
-GetStorage storage = GetStorage();
 FirebaseAuth firebaseAuth = FirebaseAuth.instance;

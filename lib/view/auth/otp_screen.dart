@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../common/button.dart';
+import '../../common/colors.dart';
+import '../../common/text.dart';
 import '../../controller/mobile_auth_controller.dart';
-import '../common/button.dart';
-import '../common/colors.dart';
-import '../common/text.dart';
 
 class OtpScreen extends StatefulWidget {
   const OtpScreen({Key? key}) : super(key: key);

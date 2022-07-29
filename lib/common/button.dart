@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:whatsapp/view/common/text.dart';
+import 'package:whatsapp/common/text.dart';
 
 class Button extends StatelessWidget {
   final double? height, width, fontSize;

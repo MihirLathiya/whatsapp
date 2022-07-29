@@ -5,8 +5,8 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:whatsapp/view/home_screen/status/status_add_screen.dart';
 import 'package:whatsapp/view/home_screen/status/status_view_screen.dart';
-import '../../common/colors.dart';
-import '../../common/text.dart';
+import '../../../common/colors.dart';
+import '../../../common/text.dart';
 
 class Status extends StatefulWidget {
   final userName, userImage;

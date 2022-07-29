@@ -1,18 +1,16 @@
 import 'dart:io';
 import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:whatsapp/controller/mobile_auth_controller.dart';
 import 'package:whatsapp/view/home_screen/home_screen.dart';
-import '../common/button.dart';
-import '../common/colors.dart';
-import '../common/image_upload.dart';
-import '../common/text.dart';
-
-FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+import 'package:whatsapp/view/prefrence_manager.dart';
+import '../../common/button.dart';
+import '../../common/colors.dart';
+import '../../common/image_upload.dart';
+import '../../common/text.dart';
 
 class AddInfoScreen extends StatefulWidget {
   const AddInfoScreen({Key? key}) : super(key: key);
@@ -151,25 +149,25 @@ class _AddInfoScreenState extends State<AddInfoScreen> {
                                   file: userImage!,
                                   filename: '${Random().nextInt(100000)}.png');
                           print('URLLLL$profileUrl');
-                          storage.write('name', name.text);
+
+                          PrefrenceManager.setName(name.text);
+                          PrefrenceManager.setImage(profileUrl);
 
                           firebaseFirestore
                               .collection('user')
                               .doc(firebaseAuth.currentUser!.uid)
                               .set({
-                            'number': '${storage.read('mobile')}',
-                            'token': storage.read('token'),
+                            'number': PrefrenceManager.getNumber(),
+                            'token': PrefrenceManager.getToken(),
                             'name': name.text,
                             'image': profileUrl,
                             'status': 'Offline',
                             'bio': 'Available',
                             'time': DateTime.now(),
-                            'roomId': '0'
                           }).catchError((e) {
                             showAlert('Try Again');
                             profileController.isNotNexted();
                           });
-                          storage.write('userImage', profileUrl);
                           Get.offAll(() => HomeScreen(),
                               transition: Transition.leftToRight);
                           profileController.isNotNexted();

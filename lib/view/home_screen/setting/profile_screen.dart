@@ -1,13 +1,11 @@
 import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:whatsapp/view/common/colors.dart';
-
-import '../../controller/info_controller.dart';
-import '../common/text.dart';
+import '../../../common/colors.dart';
+import '../../../common/text.dart';
+import '../../../controller/info_controller.dart';
 import 'about_screen.dart';
 
 class Profile extends StatefulWidget {

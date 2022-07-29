@@ -1,10 +1,12 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:whatsapp/controller/status_controller.dart';
 import 'package:whatsapp/view/home_screen/home_screen.dart';
-import '../../common/colors.dart';
-import '../../common/image_upload.dart';
+import 'package:whatsapp/view/prefrence_manager.dart';
+
+import '../../../common/colors.dart';
+import '../../../common/image_upload.dart';
+import '../../../controller/controllers.dart';
 
 class StatusAdd extends StatefulWidget {
   final status;
@@ -112,7 +114,7 @@ class _StatusAddState extends State<StatusAdd> {
         'image': url,
         'StatusMessage': statusMessage.text,
         'time': DateTime.now(),
-        'name': storage.read('name')
+        'name': PrefrenceManager.getName()
       },
     ).catchError((e) {
       statusController.isNotLoaded();

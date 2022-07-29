@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:whatsapp/view/common/colors.dart';
-
-import '../../controller/info_controller.dart';
-import '../common/text.dart';
+import '../../../common/colors.dart';
+import '../../../common/text.dart';
+import '../../../controller/info_controller.dart';
 
 class About extends StatefulWidget {
   @override

@@ -2,25 +2,21 @@ import 'package:country_phone_code_picker/core/country_phone_code_picker_widget.
 import 'package:country_phone_code_picker/models/country.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:whatsapp/view/common/button.dart';
-import 'package:whatsapp/view/common/colors.dart';
-import 'package:whatsapp/view/common/text.dart';
+import 'package:whatsapp/common/button.dart';
+import '../../common/colors.dart';
+import '../../common/text.dart';
 import '../../controller/mobile_auth_controller.dart';
 
 class MobileScreen extends StatelessWidget {
   MobileScreen({Key? key}) : super(key: key);
 
   MobileController controller = Get.put(MobileController());
-  // final countryPicker = FlCountryCodePicker();
 
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
 
-    var outlineInputBorder = const OutlineInputBorder(
-      borderSide: BorderSide(color: Colors.blue, width: 2),
-    );
     return Scaffold(
       appBar: AppBar(
         title: Ts(

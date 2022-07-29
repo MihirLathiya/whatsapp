@@ -4,7 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:get/get.dart';
-import 'mobile_auth_controller.dart';
+import '../common/colors.dart';
 
 class InfoController extends GetxController {
   String? Img;
@@ -22,7 +22,7 @@ class InfoController extends GetxController {
         .collection('user')
         .doc(FirebaseAuth.instance.currentUser!.uid)
         .get();
-    Map<String, dynamic>? getUserData = user.data() as Map<String, dynamic>?;
+    Map<String, dynamic>? getUserData = user.data();
     name = getUserData!['name'];
     bio = getUserData['bio'];
     Img = getUserData['image'];

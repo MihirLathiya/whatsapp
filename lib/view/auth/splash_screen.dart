@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:whatsapp/view/auth/mobile_screen.dart';
-import 'package:whatsapp/view/common/colors.dart';
 import 'package:whatsapp/view/home_screen/home_screen.dart';
+import 'package:whatsapp/view/prefrence_manager.dart';
+import '../../common/colors.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -19,7 +20,9 @@ class _SplashScreenState extends State<SplashScreen> {
     Timer(
       Duration(seconds: 2),
       () => Get.offAll(
-          () => storage.read('name') == null ? MobileScreen() : HomeScreen(),
+          () => PrefrenceManager.getName() == null
+              ? MobileScreen()
+              : HomeScreen(),
           transition: Transition.leftToRight),
     );
     super.initState();

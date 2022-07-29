@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:whatsapp/view/common/colors.dart';
-import 'package:whatsapp/view/home_screen/profile_screen.dart';
-import '../../controller/info_controller.dart';
-import '../common/text.dart';
+import 'package:whatsapp/view/home_screen/setting/profile_screen.dart';
+import 'package:whatsapp/view/prefrence_manager.dart';
+import '../../../common/colors.dart';
+import '../../../common/text.dart';
+import '../../../controller/info_controller.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({Key? key}) : super(key: key);
@@ -68,7 +69,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                               children: [
                                 Ts(
                                   text:
-                                      "${controller.name ?? storage.read('name')}",
+                                      "${controller.name ?? PrefrenceManager.getName()}",
                                   size: height * 0.023,
                                   weight: FontWeight.w400,
                                 ),

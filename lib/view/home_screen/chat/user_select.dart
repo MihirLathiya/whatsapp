@@ -2,9 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:whatsapp/view/common/button.dart';
-import 'package:whatsapp/view/common/colors.dart';
-import '../../common/text.dart';
+import 'package:whatsapp/controller/controllers.dart';
+import '../../../common/button.dart';
+import '../../../common/colors.dart';
+import '../../../common/text.dart';
 import 'chatRoom.dart';
 import 'functions.dart';
 
@@ -18,9 +19,10 @@ class UserSelectScreen extends StatefulWidget {
 }
 
 class _UserSelectScreenState extends State<UserSelectScreen> {
+  SearchPanelController searchPanelController =
+      Get.put(SearchPanelController());
   TextEditingController _search = TextEditingController();
   String search = '';
-  bool isSearch = false;
   String? roomId;
   @override
   Widget build(BuildContext context) {
@@ -30,107 +32,112 @@ class _UserSelectScreenState extends State<UserSelectScreen> {
       body: SafeArea(
         child: Column(
           children: [
-            isSearch == false
-                ? Container(
-                    color: AppColors.mainColor,
-                    height: height * 0.07,
-                    width: width,
-                    child: Column(
-                      children: [
-                        SizedBox(
-                          height: height * 0.005,
-                        ),
-                        Row(
-                          children: [
-                            IconButton(
-                              onPressed: () {
-                                setState(() {
-                                  search = '';
-                                });
-                                Get.back();
-                              },
-                              icon: Icon(
-                                Icons.arrow_back,
-                                color: AppColors.white,
-                              ),
-                            ),
-                            Ts(
-                              text: 'Select Contact',
-                              size: height * 0.02,
-                              color: AppColors.white,
-                            ),
-                            Spacer(),
-                            IconButton(
-                              onPressed: () {
-                                setState(() {
-                                  isSearch = true;
-                                });
-                              },
-                              icon: Icon(
-                                Icons.search,
-                                color: AppColors.white,
-                              ),
-                            ),
-                            IconButton(
-                              onPressed: () {},
-                              icon: Icon(
-                                Icons.more_vert_sharp,
-                                color: AppColors.white,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  )
-                : Container(
-                    color: AppColors.white,
-                    height: height * 0.07,
-                    width: width,
-                    child: Column(
-                      children: [
-                        SizedBox(
-                          height: height * 0.005,
-                        ),
-                        Row(
-                          children: [
-                            IconButton(
-                              onPressed: () {
-                                setState(() {
-                                  isSearch = false;
-                                });
-                              },
-                              icon: Icon(
-                                Icons.arrow_back,
-                                color: Colors.black,
-                              ),
-                            ),
-                            Expanded(
-                              child: TextFormField(
-                                controller: _search,
-                                onChanged: (value) {
+            Obx(
+              () => searchPanelController.isSearch.value == false
+                  ? Container(
+                      color: AppColors.mainColor,
+                      height: height * 0.08,
+                      width: width,
+                      child: Column(
+                        children: [
+                          SizedBox(
+                            height: height * 0.005,
+                          ),
+                          Row(
+                            children: [
+                              IconButton(
+                                onPressed: () {
                                   setState(() {
-                                    search = value;
+                                    search = '';
                                   });
+                                  Get.back();
                                 },
-                                decoration: InputDecoration(
-                                  contentPadding: EdgeInsets.symmetric(
-                                      horizontal: width * 0.02),
-                                  hintText: "Search....",
-                                  hintStyle: TextStyle(
-                                    fontSize: height * 0.022,
-                                  ),
-                                  border: UnderlineInputBorder(
-                                    borderSide: BorderSide.none,
-                                  ),
+                                icon: Icon(
+                                  Icons.arrow_back,
+                                  color: AppColors.white,
                                 ),
                               ),
-                            )
-                          ],
-                        )
-                      ],
+                              Ts(
+                                text: 'Select Contact',
+                                size: height * 0.02,
+                                color: AppColors.white,
+                              ),
+                              Spacer(),
+                              IconButton(
+                                onPressed: () {
+                                  // setState(() {
+                                  //   isSearch = true;
+                                  // });
+
+                                  searchPanelController.isSearched();
+                                },
+                                icon: Icon(
+                                  Icons.search,
+                                  color: AppColors.white,
+                                ),
+                              ),
+                              IconButton(
+                                onPressed: () {},
+                                icon: Icon(
+                                  Icons.more_vert_sharp,
+                                  color: AppColors.white,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    )
+                  : Container(
+                      color: AppColors.white,
+                      height: height * 0.08,
+                      width: width,
+                      child: Column(
+                        children: [
+                          SizedBox(
+                            height: height * 0.005,
+                          ),
+                          Row(
+                            children: [
+                              IconButton(
+                                onPressed: () {
+                                  // setState(() {
+                                  //   isSearch = false;
+                                  // });
+                                  searchPanelController.isNotSearched();
+                                },
+                                icon: Icon(
+                                  Icons.arrow_back,
+                                  color: Colors.black,
+                                ),
+                              ),
+                              Expanded(
+                                child: TextFormField(
+                                  controller: _search,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      search = value;
+                                    });
+                                  },
+                                  decoration: InputDecoration(
+                                    contentPadding: EdgeInsets.symmetric(
+                                        horizontal: width * 0.02),
+                                    hintText: "Search....",
+                                    hintStyle: TextStyle(
+                                      fontSize: height * 0.022,
+                                    ),
+                                    border: UnderlineInputBorder(
+                                      borderSide: BorderSide.none,
+                                    ),
+                                  ),
+                                ),
+                              )
+                            ],
+                          )
+                        ],
+                      ),
                     ),
-                  ),
+            ),
             Expanded(
               child: StreamBuilder(
                 stream: firebaseFirestore
@@ -216,7 +223,6 @@ class _UserSelectScreenState extends State<UserSelectScreen> {
                                         '${snapshot.data!.docs[index].id}',
                                         '${firebaseAuth.currentUser!.uid}',
                                       );
-                                      print("ROOMEDUSERSELECT$roomId");
 
                                       Get.to(
                                         () => ChatRoom(
@@ -225,7 +231,6 @@ class _UserSelectScreenState extends State<UserSelectScreen> {
                                           name: '${info[index]['name']}',
                                           number: '${info[index]['number']}',
                                           uid: snapshot.data!.docs[index].id,
-                                          // token: '${info[index]['number']}'
                                         ),
                                         transition: Transition.rightToLeft,
                                       );

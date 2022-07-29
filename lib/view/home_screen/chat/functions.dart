@@ -1,9 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
-import 'package:whatsapp/view/common/colors.dart';
-
-import '../../../controller/mobile_auth_controller.dart';
+import '../../../common/colors.dart';
 
 FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 callNumber(String phoneNumber, String name, String image, time) async {
@@ -25,7 +23,7 @@ callNumber(String phoneNumber, String name, String image, time) async {
   });
 }
 
-/// chateRoomId
+/// chatRoomId
 Future<String> chatRoomId(String user1, String user2) async {
   if (user1[0].toLowerCase().codeUnitAt(0) >
       user2.toLowerCase().codeUnitAt(0)) {
@@ -35,7 +33,7 @@ Future<String> chatRoomId(String user1, String user2) async {
   }
 }
 
-/// status oneline / offline
+/// status online / offline
 setStatus(String status) async {
   await FirebaseFirestore.instance
       .collection("user")
