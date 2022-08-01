@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import '../../common/colors.dart';
 import '../../common/text.dart';
 import 'chat/functions.dart';
@@ -35,6 +36,10 @@ class _CallsState extends State<Calls> {
             shrinkWrap: true,
             itemCount: info.length,
             itemBuilder: (context, index) {
+              DateTime myTime = (info[index]['time']).toDate();
+              var x = DateFormat.jm().format(myTime);
+              var y = DateFormat.d().format(myTime);
+              var z = DateFormat.MMM().format(myTime);
               return Container(
                 height: height * 0.09,
                 width: width,
@@ -66,28 +71,51 @@ class _CallsState extends State<Calls> {
                           size: height * 0.02,
                           weight: FontWeight.w500,
                         ),
-                        Ts(
-                          text: '${info[index]['number']}',
-                          size: height * 0.015,
-                          color: AppColors.textColor,
-                          weight: FontWeight.w500,
-                        ),
+                        Row(
+                          children: [
+                            Icon(
+                              firebaseAuth.currentUser!.uid ==
+                                      info[index]['uid']
+                                  ? Icons.call_made
+                                  : Icons.call_received,
+                              size: 15,
+                              color: firebaseAuth.currentUser!.uid ==
+                                      info[index]['uid']
+                                  ? Colors.green
+                                  : Colors.red,
+                            ),
+                            Ts(
+                              text: '$y $z $x',
+                              size: height * 0.013,
+                              color: AppColors.textColor,
+                            ),
+                          ],
+                        )
                       ],
                     ),
                     Spacer(),
-                    IconButton(
-                      onPressed: () async {
-                        await callNumber(
-                            info[index]['number'],
-                            info[index]['name'],
-                            info[index]['image'],
-                            DateTime.now());
-                      },
-                      icon: Icon(
-                        Icons.call,
-                        color: AppColors.mainColor,
-                      ),
-                    )
+                    info[index]['type'] == 'voice'
+                        ? IconButton(
+                            onPressed: () async {
+                              await callNumber(
+                                  info[index]['number'],
+                                  info[index]['name'],
+                                  info[index]['image'],
+                                  DateTime.now(),
+                                  info[index].id);
+                            },
+                            icon: Icon(
+                              Icons.call,
+                              color: AppColors.mainColor,
+                            ),
+                          )
+                        : IconButton(
+                            onPressed: () async {},
+                            icon: Icon(
+                              Icons.video_call,
+                              color: AppColors.mainColor,
+                            ),
+                          )
                   ],
                 ),
               );

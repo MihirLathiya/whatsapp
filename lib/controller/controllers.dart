@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 
-/// SearchUserselectionController
+/// SearchReselectionController
 class SearchPanelController extends GetxController {
   var isSearch = false.obs;
 

@@ -49,6 +49,7 @@ dependencies:
   firebase_messaging:
   emoji_picker_flutter: ^1.2.1
   intl:
+  file_picker:
 
 
 dev_dependencies:
